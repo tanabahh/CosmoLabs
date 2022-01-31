@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User</title>
+</head>
+<body>
+Найти информацию о документе:
+<input type="text" id="name" placeholder="Name">
+<input type="button" value="Получить" id="button-find">
+<br>
+<input type="button" value="Загрузить документы" id="button-document">
+<div id="result-find"></div>
+<br>
+<div id="error-find"></div>
+<br>
+</body>
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var id;
+        $('#button-find').click(function () {
+            let s = '';
+            var name = document.getElementById("name").value;
+            $.ajax({
+                type: 'GET',
+                url: 'http://app-cosmolabs-211223184247.azurewebsites.net/user/process/' + name,
+                headers: {
+                    Accept: "application/json; charset=utf-8",
+                    "Content-Type": "application/json; charset=utf-8",
+                },
+                success: function (result) {
+                    console.log(result);
+                    id = result.id;
+                    for (let i = 0; i < result.unitTypes.length; i++) {
+                        console.log(result.unitTypes[i].id)
+                        $.ajax({
+                            type: 'GET',
+                            url: 'http://app-cosmolabs-211223184247.azurewebsites.net/user/unit/' + result.unitTypes[i].id,
+                            headers: {
+                                Accept: "application/json; charset=utf-8",
+                                "Content-Type": "application/json; charset=utf-8",
+                            },
+                            success: function (new_result) {
+                                console.log(new_result);
+                                s += '<br><br>You need ' + result.unitTypes[i].name + ' type of institution'
+                                s += '<br><br>We found this unit type in our database, you can do this in:';
+                                for (let j = 0; j < new_result.length; j++) {
+                                    s += '<br>Location: ' +
+                                        '<br>&nbsp;&nbsp;&nbsp;&nbsp;Country: ' + new_result[j].geo_id.country +
+                                        '<br>&nbsp;&nbsp;&nbsp;&nbsp;Region: ' + new_result[j].geo_id.region +
+                                        '<br>&nbsp;&nbsp;&nbsp;&nbsp;City: ' + new_result[j].geo_id.city +
+                                        '<br>&nbsp;&nbsp;&nbsp;&nbsp;ZipCode: ' + new_result[j].geo_id.zipCode +
+                                        '<br>&nbsp;&nbsp;&nbsp;&nbsp;Street: ' + new_result[j].geo_id.street +
+                                        '<br>&nbsp;&nbsp;&nbsp;&nbsp;House: ' + new_result[j].geo_id.house +
+                                        '<br>Comment : ' + new_result[j].comment +
+                                        '<br>==========================<br>'
+                                }
+                                document.getElementById('result-find').innerHTML = s;
+
+
+                            },
+                            error: function (XMLHttpRequest) {
+                                console.log(XMLHttpRequest.responseText)
+                                document.getElementById('error-find').innerHTML = XMLHttpRequest.responseText
+                            }
+                        })
+                    }
+                },
+                error: function (XMLHttpRequest) {
+                    console.log(XMLHttpRequest.responseText)
+                    document.getElementById('error-find').innerHTML = XMLHttpRequest.responseText
+                }
+            })
+
+
+        })
+
+
+
+        $('#button-document').click(function () {
+            console.log(id)
+            var url = 'http://app-cosmolabs-211223184247.azurewebsites.net/user/download/' + id;
+            window.location.href = url;
+
+        })
+    })
+</script>
+</html>

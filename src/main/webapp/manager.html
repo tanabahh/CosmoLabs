@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Manager</title>
+</head>
+<body>
+Approve process:
+<input type="text" id="processId" placeholder="processId">
+<input type="button" value="Approve" id="button-find">
+<br>
+<div id="result-find"></div>
+<br>
+<div id="error-find"></div>
+<br>
+</body>
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#button-find').click(function () {
+            var processId = document.getElementById("processId").value;
+            $.ajax({
+                type: 'GET',
+                url: 'http://app-cosmolabs-211223184247.azurewebsites.net/manager/approve',
+                data: {
+                    "processId" : processId,
+                },
+                headers: {
+                    Accept: "application/json; charset=utf-8",
+                    "Content-Type": "application/json; charset=utf-8",
+                },
+                success: function (result) {
+                    console.log(result);
+                },
+                error: function (XMLHttpRequest) {
+                    console.log(XMLHttpRequest.responseText)
+                    document.getElementById('error-find').innerHTML = XMLHttpRequest.responseText
+                }
+            })
+
+
+        })
+    })
+</script>
+</html>

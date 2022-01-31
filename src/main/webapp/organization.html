@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Organization</title>
+</head>
+<body>
+Create process:
+<input type="text" id="unit_type_id" placeholder="Unit Type Id">
+<input type="text" id="ProcessName" placeholder="Name">
+<input type="button" value="Create" id="button-create-process">
+<br>
+Create Unit Type:
+<input type="text" id="UnitTypeName" placeholder="Name">
+<input type="button" value="Create" id="button-create-unit-type">
+<br>
+Create Unit:
+<input type="text" id="country" placeholder="Country">
+<input type="text" id="region" placeholder="Region">
+<input type="text" id="city" placeholder="City">
+<input type="text" id="street" placeholder="Street">
+<input type="text" id="house" placeholder="House">
+<input type="text" id="flat" placeholder="Flat">
+<input type="text" id="zipCode" placeholder="ZipCode">
+<input type="text" id="lat" placeholder="Lat">
+<input type="text" id="lon" placeholder="Lon">
+<input type="text" id="unit_type_id_unit" placeholder="Unit Type Id">
+<input type="text" id="comment" placeholder="Comment">
+<input type="button" value="Create" id="button-create-unit">
+<br>
+<div id="result-find"></div>
+<br>
+<div id="error-find"></div>
+<br>
+</body>
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#button-create-process').click(function () {
+            let s = '';
+            var unitTypeId = document.getElementById("unit_type_id").value;
+            var processName = document.getElementById("ProcessName").value;
+            $.ajax({
+                type: 'POST',
+                url: 'http://app-cosmolabs-211223184247.azurewebsites.net/organization/process-type',
+                data: {
+                    "approve" : false,
+                    "unitTypeId": unitTypeId,
+                    "name": processName
+                },
+                headers: {
+                    Accept: "application/json; charset=utf-8",
+                    "Content-Type": "application/json; charset=utf-8",
+                },
+                success: function (result) {
+                    console.log(result);
+                    // s += '<br><br>You need ' + result.unitTypes[i].name + ' type of institution'
+                    // s += '<br><br>We found this unit type in our database, you can do this in:';
+                    // for (let j = 0; j < new_result.length; j++) {
+                    //     s += '<br>Location: ' +
+                    //         '<br>&nbsp;&nbsp;&nbsp;&nbsp;Country: ' + new_result[j].geo_id.country +
+                    //         '<br>&nbsp;&nbsp;&nbsp;&nbsp;Region: ' + new_result[j].geo_id.region +
+                    //         '<br>&nbsp;&nbsp;&nbsp;&nbsp;City: ' + new_result[j].geo_id.city +
+                    //         '<br>&nbsp;&nbsp;&nbsp;&nbsp;ZipCode: ' + new_result[j].geo_id.zipCode +
+                    //         '<br>Comment : ' + new_result[j].comment +
+                    //         '<br>==========================<br>'
+                    // }
+                    document.getElementById('result-find').innerHTML = result;
+                },
+                error: function (XMLHttpRequest) {
+                    console.log(XMLHttpRequest.responseText)
+                    document.getElementById('error-find').innerHTML = XMLHttpRequest.responseText
+                }
+            })
+
+
+        })
+
+        $('#button-create-unit-type').click(function () {
+            let s = '';
+            var unitName = document.getElementById("UnitTypeName").value;
+            $.ajax({
+                type: 'POST',
+                url: 'http://app-cosmolabs-211223184247.azurewebsites.net/organization/unit-type',
+                data: {
+                    "name": unitName
+                },
+                headers: {
+                    Accept: "application/json; charset=utf-8",
+                    "Content-Type": "application/json; charset=utf-8",
+                },
+                success: function (result) {
+                    console.log(result);
+                    // s += '<br><br>You need ' + result.unitTypes[i].name + ' type of institution'
+                    // s += '<br><br>We found this unit type in our database, you can do this in:';
+                    // for (let j = 0; j < new_result.length; j++) {
+                    //     s += '<br>Location: ' +
+                    //         '<br>&nbsp;&nbsp;&nbsp;&nbsp;Country: ' + new_result[j].geo_id.country +
+                    //         '<br>&nbsp;&nbsp;&nbsp;&nbsp;Region: ' + new_result[j].geo_id.region +
+                    //         '<br>&nbsp;&nbsp;&nbsp;&nbsp;City: ' + new_result[j].geo_id.city +
+                    //         '<br>&nbsp;&nbsp;&nbsp;&nbsp;ZipCode: ' + new_result[j].geo_id.zipCode +
+                    //         '<br>Comment : ' + new_result[j].comment +
+                    //         '<br>==========================<br>'
+                    // }
+                    document.getElementById('result-find').innerHTML = result;
+                },
+                error: function (XMLHttpRequest) {
+                    console.log(XMLHttpRequest.responseText)
+                    document.getElementById('error-find').innerHTML = XMLHttpRequest.responseText
+                }
+            })
+        })
+
+        $('#button-create-unit').click(function () {
+            // <input type="text" id="country" placeholder="Country">
+            //     <input type="text" id="region" placeholder="Region">
+            //         <input type="text" id="city" placeholder="City">
+            //             <input type="text" id="street" placeholder="Street">
+            //                 <input type="text" id="house" placeholder="House">
+            //                     <input type="text" id="flat" placeholder="Flat">
+            //                         <input type="text" id="zipCode" placeholder="ZipCode">
+            //                             <input type="text" id="lat" placeholder="Lat">
+            //                                 <input type="text" id="lon" placeholder="Lon">
+            //                                     <input type="text" id="unit_type_id_unit" placeholder="Unit Type Id">
+            //                                         <input type="text" id="comment" placeholder="Comment">
+            let s = '';
+            var country = document.getElementById("country").value;
+            var region = document.getElementById("region").value;
+            var city = document.getElementById("city").value;
+            var street = document.getElementById("street").value;
+            var house = document.getElementById("house").value;
+            var flat = document.getElementById("flat").value;
+            var zipCode = document.getElementById("zipCode").value;
+            var lat = document.getElementById("lat").value;
+            var lon = document.getElementById("lon").value;
+            var unit_type_id_unit = document.getElementById("unit_type_id_unit").value;
+            var comment = document.getElementById("comment").value;
+
+            $.ajax({
+                type: 'POST',
+                url: 'http://app-cosmolabs-211223184247.azurewebsites.net/organization/unit',
+                data: {
+                    "country" : country,
+                    "region" : region,
+                    "city" : city,
+                    "street" : street,
+                    "house" : house,
+                    "flat" : flat,
+                    "zipCode" : zipCode,
+                    "lat" : lat,
+                    "lon" : lon,
+                    "unitTypeId" : unit_type_id_unit,
+                    "comment" : comment
+                },
+                headers: {
+                    Accept: "application/json; charset=utf-8",
+                    "Content-Type": "application/json; charset=utf-8",
+                },
+                success: function (result) {
+                    console.log(result);
+                    // s += '<br><br>You need ' + result.unitTypes[i].name + ' type of institution'
+                    // s += '<br><br>We found this unit type in our database, you can do this in:';
+                    // for (let j = 0; j < new_result.length; j++) {
+                    //     s += '<br>Location: ' +
+                    //         '<br>&nbsp;&nbsp;&nbsp;&nbsp;Country: ' + new_result[j].geo_id.country +
+                    //         '<br>&nbsp;&nbsp;&nbsp;&nbsp;Region: ' + new_result[j].geo_id.region +
+                    //         '<br>&nbsp;&nbsp;&nbsp;&nbsp;City: ' + new_result[j].geo_id.city +
+                    //         '<br>&nbsp;&nbsp;&nbsp;&nbsp;ZipCode: ' + new_result[j].geo_id.zipCode +
+                    //         '<br>Comment : ' + new_result[j].comment +
+                    //         '<br>==========================<br>'
+                    // }
+                    document.getElementById('result-find').innerHTML = result;
+                },
+                error: function (XMLHttpRequest) {
+                    console.log(XMLHttpRequest.responseText)
+                    document.getElementById('error-find').innerHTML = XMLHttpRequest.responseText
+                }
+            })
+
+
+        })
+
+    })
+</script>
+</html>
